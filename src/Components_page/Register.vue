@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import {useRouter} from "vue-router";
-import Bottom from "@/Components_single/Bottom.vue";
 import {registerService} from "@/api/user";
 import type {IRegisterData} from "@/Types/IRegisterData";
 

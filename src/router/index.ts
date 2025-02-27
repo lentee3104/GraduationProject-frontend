@@ -5,6 +5,10 @@ import type{RouteRecord, RouteRecordRaw} from "vue-router";
 const routes:Array<RouteRecordRaw> = [
     {
         path:"/",
+        component:()=>import('@/Components_page/HomePage.vue')
+    },
+    {
+        path:"/Login",
         component:()=>import('@/Components_page/Login.vue')
     },
     {
@@ -12,49 +16,26 @@ const routes:Array<RouteRecordRaw> = [
         component:()=>import('@/Components_page/Register.vue')
     },
     {
-        name:"BusinessInfo",
-        path:"/BusinessInfo",
-        component:()=>import('@/Components_page/BusinessInfo.vue')
+        path:"/InstrumentPanel",
+        component:()=>import('@/Components_page/InstrumentPanel.vue')
     },
     {
-        name:"BusinessList",
-        path:"/BusinessList",
-        component:()=>import('@/Components_page/BusinessList.vue')
+        path:"/PredictionPage",
+        component:()=>import('@/Components_page/PredictionPage.vue')
     },
     {
-        path:"/Index",
-        component:()=>import('@/Components_page/Index.vue')
+        path:"/GuidePage",
+        component:()=>import('@/Components_page/GuidePage.vue')
     },
     {
-        name:"Order",
-        path:"/Order",
-        component:()=>import('@/Components_page/Order.vue')
+        path:"/ChatPage",
+        component:()=>import('@/Components_page/ChatPage.vue')
     },
     {
-        name:"OrderList",
-        path:"/OrderList",
-        component:()=>import('@/Components_page/OrderList.vue')
+        path:"/Login",
+        component:()=>import('@/Components_page/Login.vue')
     },
-    {
-        name:"Payment",
-        path:"/Payment",
-        component:()=>import('@/Components_page/Payment.vue')
-    },
-    {
-        name:"UserAddress",
-        path:"/UserAddress",
-        component:()=>import('@/Components_page/UserAddress.vue')
-    },
-    {
-        name:"AddUserAddress",
-        path:"/AddUserAddress",
-        component:()=>import('@/Components_page/AddUserAddress.vue')
-    },
-    {
-        name:"EditUserAddress",
-        path:"/EditUserAddress",
-        component:()=>import('@/Components_page/EditUserAddress.vue')
-    },
+
 
 ]
 

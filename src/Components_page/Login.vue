@@ -1,10 +1,8 @@
 <script setup lang="ts">
-import Bottom from "@/Components_single/Bottom.vue";
 import {useRouter} from "vue-router";
 import {loginService} from "@/api/user";
 import {useAuthStore} from "@/store/token"
 import {usercodeStore} from "@/store/usercode";
-import instance from "@/utils/request";
 
 const router = useRouter()
 
