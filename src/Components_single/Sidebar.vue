@@ -34,7 +34,7 @@ const buttonClass = (id: any) => {
 
 <template>
   <aside class="fixed w-[150px] h-screen bg-white shadow-lg px-4 py-6 items-center z-50">
-    <div class="text-xl font-bold  text-center">🐟的预测系统</div>
+    <div class="text-xl font-bold  text-center ">🐟的预测系统</div>
     <div class=" w-full mt-4 items-center space-y-4 border-t-1 py-2">
       <div class="w-full h-26 p-2 " v-for="option in options" :key="option.id">
         <button

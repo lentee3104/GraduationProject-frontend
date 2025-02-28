@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { ref, onMounted, onUnmounted } from 'vue';
 
+const token = ref('')
 const isVisible = ref(true);
 const scrollThreshold = 50; // 滚动阈值
 
