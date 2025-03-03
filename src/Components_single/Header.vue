@@ -1,5 +1,7 @@
 <script setup lang="ts">
 import { ref, onMounted, onUnmounted } from 'vue';
+import router from "@/router";
+import LoginPage from "@/Components_page/LoginPage.vue";
 
 const token = ref('')
 const isVisible = ref(true);
@@ -17,6 +19,11 @@ onMounted(() => {
 onUnmounted(() => {
   window.removeEventListener('scroll', updateVisibility);
 });
+
+const navigateTo = (page: string) => {
+  console.log(`Navigating to ${page}`);
+  router.push(`/${page}`);
+};
 
 const headerClasses = computed(() => {
   return isVisible.value ? 'opacity-100' : 'opacity-0';
@@ -40,7 +47,7 @@ const headerStyle = {
       <div class="flex items-center justify-between bg-white border-1 rounded-36 py-2 px-4 text-sm">
 <!--        <span class="text-gray-700 cursor-pointer hover:underline">继续</span>-->
 <!--        <span class="text-gray-600">本时段用量 3/30</span>-->
-        <a href="#" class="text-blue-600 hover:underline">点此登录</a>
+        <button href="#" class="text-blue-600 hover:underline" @click="navigateTo('Login')">点此登录</button>
       </div>
     </div>
 
