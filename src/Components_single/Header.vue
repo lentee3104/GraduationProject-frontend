@@ -51,6 +51,7 @@ const headerClasses = computed(() => {
 const headerStyle = {
   background: 'linear-gradient(to bottom, white, transparent)',
 };
+
 </script>
 
 <template>
