@@ -5,7 +5,7 @@ import Sidebar from '@/Components_single/Sidebar.vue';
 import Header from "@/Components_single/Header.vue";
 
 // 图片上传和输入参数
-const imageFile = ref<File | null>(null);
+const file = ref<File | null>(null);
 const imageUrl = ref<string | null>(null);  // 用于存储生成的图片URL
 const param1 = ref<number | null>(null);
 const param2 = ref<number | null>(null);
@@ -20,40 +20,53 @@ const predictionResult = ref<string | null>(null);
 const onImageUpload = (event: Event) => {
   const input = event.target as HTMLInputElement;
   if (input?.files && input.files.length > 0) {
-    imageFile.value = input.files[0];
-    imageUrl.value = URL.createObjectURL(imageFile.value);  // 生成临时URL并赋值
+    file.value = input.files[0];
+    imageUrl.value = URL.createObjectURL(file.value);  // 生成临时URL并赋值
   }
 };
 
 // 提交按钮的点击事件
 const onSubmit = async () => {
-  if (!imageFile.value || !param1.value || !param2.value || !param3.value || !param4.value || !param5.value) {
-    alert('请确保上传图片并填写所有参数！');
+  console.log(param1, param2, param3,param4, param5);
+  console.log(file.value)
+  if (file.value && !file.value.type.startsWith('image/')) {
+    alert('请选择有效的图片文件');
+    return;
+  }
+  if (!param1.value === null || !param2.value === null || !param3.value === null || !param4.value === null || !param5.value === null) {
+    alert('请确保填写所有参数！');
     return;
   }
 
+  const params = [param1.value, param2.value, param3.value, param4.value, param5.value];
   const formData = new FormData();
-  formData.append('image', imageFile.value);
-  formData.append('param1', param1.value.toString());
-  formData.append('param2', param2.value.toString());
-  formData.append('param3', param3.value.toString());
-  formData.append('param4', param4.value.toString());
-  formData.append('param5', param5.value.toString());
+  formData.append('file', file.value);
+  formData.append('params',params.join(','));
+  // formData.append('params', JSON.stringify([param1.value, param2.value, param3.value, param4.value, param5.value]));
+  // formData.append('param1', param1.value.toString());
+  // formData.append('param2', param2.value.toString());
+  // formData.append('param3', param3.value.toString());
+  // formData.append('param4', param4.value.toString());
+  // formData.append('param5', param5.value.toString());
 
   try {
-    const response = await axios.post('后端接口地址', formData, {
+    const response = await axios.post('http://localhost:8080/api/prediction', formData, {
       headers: {
         'Content-Type': 'multipart/form-data',
+        'Authorization': `Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIxMjMiLCJpYXQiOjE3NDQzNTc1NjMsImV4cCI6MTc0NjQzMTE2M30.REpww4an6XlyhOBciWaVdOh6W6hKFsmBAbo3VdxKQpYeJSpAllI91eO4AaNu0VxkhB3JC2zYhVg3pDvXgDdMWw`
       },
     });
 
-    // 假设后端返回的预测结果在 response.data.prediction
-    predictionResult.value = response.data.prediction;
+    // 假设后端返回的预测结果在 response.data.predicted_class
+    predictionResult.value = response.data.predicted_class;
+    console.log(predictionResult.value);
   } catch (error) {
     console.error('请求失败：', error);
     alert('请求失败，请稍后再试');
   }
 };
+
+
 </script>
 
 <template>
@@ -73,7 +86,7 @@ const onSubmit = async () => {
               <input
                   type="file"
                   id="imageUpload"
-                  accept=".tif, .png, .jpg, .jpeg"
+                  accept=".tif, .png, .jpg, .jpeg, .tiff"
                   @change="onImageUpload"
                   class=" w-auto ml-2"
               />
