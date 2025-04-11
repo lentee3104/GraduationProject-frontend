@@ -14,7 +14,7 @@ const param4 = ref<number | null>(null);
 const param5 = ref<number | null>(null);
 
 // 预测结果
-const predictionResult = ref<string | null>(null);
+let predictionResult = ref('');
 
 // 选择图片的处理函数
 const onImageUpload = (event: Event) => {
@@ -27,7 +27,7 @@ const onImageUpload = (event: Event) => {
 
 // 提交按钮的点击事件
 const onSubmit = async () => {
-  console.log(param1, param2, param3,param4, param5);
+  console.log(param1, param2, param3, param4, param5);
   console.log(file.value)
   if (file.value && !file.value.type.startsWith('image/')) {
     alert('请选择有效的图片文件');
@@ -41,7 +41,7 @@ const onSubmit = async () => {
   const params = [param1.value, param2.value, param3.value, param4.value, param5.value];
   const formData = new FormData();
   formData.append('file', file.value);
-  formData.append('params',params.join(','));
+  formData.append('params', params.join(','));
   // formData.append('params', JSON.stringify([param1.value, param2.value, param3.value, param4.value, param5.value]));
   // formData.append('param1', param1.value.toString());
   // formData.append('param2', param2.value.toString());
@@ -49,23 +49,53 @@ const onSubmit = async () => {
   // formData.append('param4', param4.value.toString());
   // formData.append('param5', param5.value.toString());
 
+  const token = localStorage.getItem('token');
   try {
     const response = await axios.post('http://localhost:8080/api/prediction', formData, {
       headers: {
         'Content-Type': 'multipart/form-data',
-        'Authorization': `Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIxMjMiLCJpYXQiOjE3NDQzNTc1NjMsImV4cCI6MTc0NjQzMTE2M30.REpww4an6XlyhOBciWaVdOh6W6hKFsmBAbo3VdxKQpYeJSpAllI91eO4AaNu0VxkhB3JC2zYhVg3pDvXgDdMWw`
+        'Authorization': `Bearer ${token}`
       },
     });
 
     // 假设后端返回的预测结果在 response.data.predicted_class
-    predictionResult.value = response.data.predicted_class;
-    console.log(predictionResult.value);
+    console.log(response.data);
+    // 检查response.data的类型
+    console.log('response.data的类型:', typeof response.data);
+
+    let predictionResult;
+
+    // 如果response.data是字符串并且包含"Flask response:"
+    if (typeof response.data === 'string' && response.data.includes('Flask response:')) {
+      // 提取JSON部分并解析
+      const jsonStr = response.data.substring(response.data.indexOf('{'), response.data.lastIndexOf('}') + 1);
+      const parsedData = JSON.parse(jsonStr);
+      predictionResult = parsedData.predicted_class;
+    }
+    // 如果response.data已经是一个对象
+    else if (typeof response.data === 'object' && response.data !== null) {
+      predictionResult = response.data.predicted_class;
+    }
+
+    console.log('预测结果:', predictionResult);
+
+    if (predictionResult === 0) {
+      alert('预测结果为0');
+      // 处理结果为0的情况
+    } else if (predictionResult === 1) {
+      alert('预测结果为1');
+      // 处理结果为1的情况
+    } else if (predictionResult === 2) {
+      alert('预测结果为2');
+      // 处理结果为2的情况
+    } else {
+      alert('无效的预测结果:', predictionResult);
+    }
   } catch (error) {
     console.error('请求失败：', error);
     alert('请求失败，请稍后再试');
   }
-};
-
+}
 
 </script>
 

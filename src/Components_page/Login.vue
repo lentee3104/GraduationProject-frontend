@@ -6,6 +6,7 @@ import router from "@/router";
 // 用户名和密码的响应式引用
 const username = ref('');
 const password = ref('');
+let token = ref('');
 
 // 路由跳转
 const navigateTo = (page: string) => {
@@ -23,9 +24,14 @@ const handleLogin = async () => {
 
     // 假设返回的响应中有 token 或其他用户信息，可以在这里处理
     console.log('Login successful:', response.data);
+    token = response.data.token;
+    console.log('successfully get token'+token);
+    localStorage.setItem('token', token);
+    localStorage.setItem('username', username.value);
 
+    console.log('token in localstorgae is'+localStorage.getItem('token'));
     // 在成功登录后可以跳转到主页或其他页面
-    router.push('/home');  // 修改为你希望跳转的页面
+    router.push('/#');  // 修改为你希望跳转的页面
 
   } catch (error) {
     console.error('Login failed:', error);

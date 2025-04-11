@@ -1,9 +1,11 @@
 <script setup lang="ts">
-import { ref, onMounted, onUnmounted } from 'vue';
+import { ref, onMounted, onUnmounted, computed } from 'vue';
 import router from "@/router";
 import LoginPage from "@/Components_page/LoginPage.vue";
 
-const token = ref('')
+const token = ref('');
+const username = ref('');
+const isLoggedIn = ref(false);
 const isVisible = ref(true);
 const scrollThreshold = 50; // 滚动阈值
 
@@ -14,6 +16,13 @@ const updateVisibility = () => {
 
 onMounted(() => {
   window.addEventListener('scroll', updateVisibility);
+
+  // 在组件挂载时检查localStorage中是否有username
+  const storedUsername = localStorage.getItem('username');
+  if (storedUsername) {
+    username.value = storedUsername;
+    isLoggedIn.value = true;
+  }
 });
 
 onUnmounted(() => {
@@ -23,6 +32,16 @@ onUnmounted(() => {
 const navigateTo = (page: string) => {
   console.log(`Navigating to ${page}`);
   router.push(`/${page}`);
+};
+
+const logout = () => {
+  // 清除localStorage中的用户信息
+  localStorage.removeItem('username');
+  localStorage.removeItem('token');
+  isLoggedIn.value = false;
+  username.value = '';
+  // 可选：跳转到首页或其他页面
+  router.push('/');
 };
 
 const headerClasses = computed(() => {
@@ -45,12 +64,15 @@ const headerStyle = {
         <h1 class="text-xl font-bold">My Header</h1>
       </div>
       <div class="flex items-center justify-between bg-white border-1 rounded-36 py-2 px-4 text-sm">
-<!--        <span class="text-gray-700 cursor-pointer hover:underline">继续</span>-->
-<!--        <span class="text-gray-600">本时段用量 3/30</span>-->
-        <button href="#" class="text-blue-600 hover:underline" @click="navigateTo('Login')">点此登录</button>
+        <template v-if="isLoggedIn">
+          <span class="text-gray-700 mr-2">你好，{{ username }}</span>
+          <button class="text-red-500 hover:underline ml-2" @click="logout">退出</button>
+        </template>
+        <template v-else>
+          <button href="#" class="text-blue-600 hover:underline" @click="navigateTo('Login')">点此登录</button>
+        </template>
       </div>
     </div>
-
   </header>
 </template>
 
