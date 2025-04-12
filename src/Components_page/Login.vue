@@ -27,7 +27,8 @@ const handleLogin = async () => {
     token = response.data.token;
     console.log('successfully get token'+token);
     localStorage.setItem('token', token);
-    localStorage.setItem('username', username.value);
+    localStorage.setItem('userName', username.value);
+    localStorage.setItem('userId', response.data.id);
 
     console.log('token in localstorgae is'+localStorage.getItem('token'));
     // 在成功登录后可以跳转到主页或其他页面

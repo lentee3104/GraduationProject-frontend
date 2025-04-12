@@ -79,6 +79,29 @@ const onSubmit = async () => {
 
     console.log('预测结果:', predictionResult);
 
+    if (predictionResult === 1 || predictionResult === 2 || predictionResult === 3) {
+      // 发送 userId 和 modelId 以及 predictionResult 到 /api/update 接口
+      const userId = localStorage.getItem('userId');  // 这里替换成实际的 userId
+      const modelId = 1;  // 这里替换成实际的 modelId
+
+      // 调用 /api/update 接口更新数据库
+      try {
+        const updateResponse = await axios.post('http://localhost:8080/api/updateAllStatistic',null, {
+          params: {
+            userId: String(userId),
+            modelId:String(modelId),
+          },
+          headers: {
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json'
+          }
+        });
+      }catch (error) {
+        console.error('update failed:', error);
+
+      }
+    }
+
     if (predictionResult === 0) {
       alert('预测结果为0');
       // 处理结果为0的情况

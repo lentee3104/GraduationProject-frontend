@@ -18,7 +18,7 @@ onMounted(() => {
   window.addEventListener('scroll', updateVisibility);
 
   // 在组件挂载时检查localStorage中是否有username
-  const storedUsername = localStorage.getItem('username');
+  const storedUsername = localStorage.getItem('userName');
   if (storedUsername) {
     username.value = storedUsername;
     isLoggedIn.value = true;
