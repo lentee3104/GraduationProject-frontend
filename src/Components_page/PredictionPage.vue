@@ -96,6 +96,7 @@ const onSubmit = async () => {
             'Content-Type': 'application/json'
           }
         });
+        console.log('update success')
       }catch (error) {
         console.error('update failed:', error);
 
@@ -130,24 +131,39 @@ const onSubmit = async () => {
       <div class="flex-col items-center justify-center mt-20 ml-[150px] w-[1200px]">
         <div class="w-full justify-center items-center text-2xl">PredictionPage</div>
         <div class="h-screen w-full justify-center items-center mt-10">
-          <div class="w-full flex-col items-center justify-center"> <!--这里是图片-->
-            <div v-if="imageUrl" class=" flex justify-center items-center">
-              <img :src="imageUrl" alt="Selected Image" class="max-w-full h-auto rounded shadow-lg" />
+          <!-- 修改后的图片展示区域 -->
+          <div class="w-full flex-col items-center justify-center mb-8">
+            <div class="flex justify-center items-center mb-4">
+              <!-- 图片容器，设置固定尺寸和背景 -->
+              <div class="w-[600px] h-[400px] border-2 border-dashed border-gray-300 rounded-lg flex items-center justify-center bg-gray-100 overflow-hidden">
+                <div v-if="imageUrl" class="w-full h-full flex items-center justify-center">
+                  <img
+                      :src="imageUrl"
+                      alt="Selected Image"
+                      class="max-w-full max-h-full object-contain rounded shadow-lg"
+                  />
+                </div>
+                <div v-else class="text-gray-400 text-center p-4">
+                  请上传图片预览
+                </div>
+              </div>
             </div>
-            <div class="flex w-full items-center justify-center ">
-              <label for="imageUpload" class="">上传图片 (tif 或其他格式)</label>
-              <input
-                  type="file"
-                  id="imageUpload"
-                  accept=".tif, .png, .jpg, .jpeg, .tiff"
-                  @change="onImageUpload"
-                  class=" w-auto ml-2"
-              />
+            <div class="flex w-full items-center justify-center">
+              <label for="imageUpload" class="cursor-pointer px-4 py-2 bg-white text-black rounded hover:bg-[#CFB8E8FF] transition-colors">
+                上传图片 (tif 或其他格式)
+                <input
+                    type="file"
+                    id="imageUpload"
+                    accept=".tif, .png, .jpg, .jpeg, .tiff"
+                    @change="onImageUpload"
+                    class="hidden"
+                />
+              </label>
             </div>
           </div>
 
-          <div class="flex gap-4 w-full justify-center"><!--这里是参数-->
-            <div class="mb-4 flex justify-center items-center mt-10">
+          <div class="flex gap-4 w-full justify-center mt-8"><!--这里是参数-->
+            <div class="mb-4 flex justify-center items-center ">
               <label for="param1" class="block">参数 1</label>
               <input
                   type="number"
@@ -158,7 +174,7 @@ const onSubmit = async () => {
               />
             </div>
 
-            <div class="mb-4 flex justify-center items-center mt-10">
+            <div class="mb-4 flex justify-center items-center ">
               <label for="param2" class="block ">参数 2</label>
               <input
                   type="number"
@@ -169,7 +185,7 @@ const onSubmit = async () => {
               />
             </div>
 
-            <div class="mb-4 flex justify-center items-center mt-10">
+            <div class="mb-4 flex justify-center items-center ">
               <label for="param3" class="block ">参数 3</label>
               <input
                   type="number"
@@ -180,7 +196,7 @@ const onSubmit = async () => {
               />
             </div>
 
-            <div class="mb-4 flex justify-center items-center mt-10">
+            <div class="mb-4 flex justify-center items-center ">
               <label for="param4" class="block ">参数 4</label>
               <input
                   type="number"
@@ -191,7 +207,7 @@ const onSubmit = async () => {
               />
             </div>
 
-            <div class="mb-4 flex justify-center items-center mt-10">
+            <div class="mb-4 flex justify-center items-center ">
               <label for="param5" class="block ">参数 5</label>
               <input
                   type="number"
@@ -204,7 +220,7 @@ const onSubmit = async () => {
           </div>
 
           <div><!--提交按钮-->
-            <div class="flex justify-center items-center mt-10">
+            <div class="flex justify-center items-center mt-8">
               <button
                   @click="onSubmit"
                   class="px-6 py-2 bg-white text-black rounded hover:bg-[#CFB8E8FF]"
@@ -226,5 +242,21 @@ const onSubmit = async () => {
 <style scoped>
 .container {
   max-width: 1200px;
+}
+
+/* 图片容器的响应式设计 */
+@media (max-width: 768px) {
+  .image-container {
+    width: 100%;
+    height: 300px;
+  }
+}
+
+/* 图片的缩放样式 */
+.image-preview {
+  transition: transform 0.3s ease;
+}
+.image-preview:hover {
+  transform: scale(1.05);
 }
 </style>
